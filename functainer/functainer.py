@@ -5,7 +5,7 @@ import inspect
 import os
 import tempfile
 
-.github
+
 def func2functainer(function: Callable[[], None],
                     image: str = 'python:latest',
                     requirements: Optional[List[str]] = None) -> str:
