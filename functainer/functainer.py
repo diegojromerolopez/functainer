@@ -39,8 +39,8 @@ def func2functainer(function: Callable[[], None],
             image=image,
             command='python3 /tmp/dockerizer_temp/executor.py',
             volumes=[
-                f'{temp_dir_path}:/tmp/dockerizer_temp:z',
-                f'{output_file_path}:/tmp/dockerizer_output:z'
+                f'{temp_dir_path}:/tmp/dockerizer_temp:Z',
+                f'{output_file_path}:/tmp/dockerizer_output:Z'
             ],
             remove=True
         )
