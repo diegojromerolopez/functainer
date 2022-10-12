@@ -1,11 +1,30 @@
 import os
 import unittest
+from typing import BinaryIO
 
 from functainer.decorator import functainerize
 
 
-@functainerize(requirements=[])
-def basic_output(output_file_path: str):  # pragma: no cover
+@functainerize(python_command='python2', image='boomset/ubuntu-python27-mysql')
+def old_python(output_file_path):  # pragma: no cover
+    with open(output_file_path, 'w') as output_file:
+        output_file.write(str(5 / 2))
+
+
+@functainerize(requirements=[], returning='contents')
+def basic_contents_output(output_file_path: str):  # pragma: no cover
+    with open(output_file_path, 'wb') as output_file:
+        output_file.write(b'output')
+
+
+@functainerize(requirements=[], returning='file')
+def basic_file_output(output_file_path: str):  # pragma: no cover
+    with open(output_file_path, 'wb') as output_file:
+        output_file.write(b'output')
+
+
+@functainerize(returning='invalid')
+def basic_invalid_output(output_file_path: str):  # pragma: no cover
     with open(output_file_path, 'wb') as output_file:
         output_file.write(b'output')
 
@@ -20,14 +39,34 @@ def package_installation(output_file_path: str):  # pragma: no cover
 
 
 class TestDecorator(unittest.TestCase):
-    def test_basic_output(self):
-        output_file_path = basic_output()
+    def test_old_python(self):
+        output_file_path = old_python()
         with open(output_file_path, mode='rb') as output_file:
             output_file_contents = output_file.read()
 
         os.unlink(output_file_path)
 
-        self.assertEqual(b'output', output_file_contents)
+        # Note we are testing the integer division that happened in python2
+        self.assertEqual(b'2', output_file_contents)
+
+    def test_basic_contents_output(self):
+        output: bytes = basic_contents_output()
+
+        self.assertEqual(b'output', output)
+
+    def test_basic_file_output(self):
+        output_file: BinaryIO = basic_file_output()
+        output = output_file.read()
+        output_file.close()
+
+        self.assertEqual(b'output', output)
+
+    def test_basic_invalid_output(self):
+        with self.assertRaises(ValueError) as exception_context:
+            basic_invalid_output()
+
+        self.assertEqual('Invalid returning value. Valid values are: \'file_path\', \'file_path\', or \'contents\'',
+                         str(exception_context.exception))
 
     def test_package_installation(self):
         expected_output = (
