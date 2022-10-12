@@ -5,13 +5,13 @@ from functainer.decorator import functainerize
 
 
 @functainerize(requirements=[])
-def basic_output(output_file_path: str):
+def basic_output(output_file_path: str):  # pragma: no cover
     with open(output_file_path, 'wb') as output_file:
         output_file.write(b'output')
 
 
 @functainerize(requirements=['pandas==1.5.0'])
-def package_installation(output_file_path: str):
+def package_installation(output_file_path: str):  # pragma: no cover
     import pandas as pd
 
     df = pd.DataFrame(['value1', 'value2'])
