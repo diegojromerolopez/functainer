@@ -42,7 +42,8 @@ def func2functainer(function: Callable[[], None],
                 f'{temp_dir_path}:/tmp/dockerizer_temp:Z',
                 f'{output_file_path}:/tmp/dockerizer_output:Z'
             ],
-            remove=True
+            remove=True,
+            user=f'{os.getuid()}:{os.getgid()}'
         )
 
     docker_client.close()
