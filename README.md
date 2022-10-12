@@ -6,6 +6,10 @@
 ## What's this?
 A way to run Python functions in a container without having to worry about docker.
 
+## Why?
+- To keep some code with different dependencies than your main code.
+- Because, why not?
+
 ## Requirements
 You must have [docker](https://www.docker.com/) installed in your machine and 
 [docker python package](https://pypi.org/project/docker/)
@@ -35,11 +39,13 @@ def package_installation(output_file_path: str):
 For more examples, see the [test_decorator.py](functainer/tests/test_decorator.py) file.
 
 ## TODO
-- [] Check that the decorated function has the required parameter.
-- [] Remove requirement to import everything locally.
-- [] Add more tests.
-- [] Add async version.
+- [ ] Check that the decorated function has the required parameter.
+- [ ] Remove requirement to import everything locally.
+- [ ] Add more tests.
+- [ ] Add async version.
+
+## Author
+Diego J. Romero López
 
 ## License
-
 [MIT](LICENSE)
