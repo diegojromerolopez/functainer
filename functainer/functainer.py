@@ -1,4 +1,4 @@
-from typing import List, Optional, Callable, BinaryIO, Union, Literal, Dict
+from typing import List, Optional, Callable, BinaryIO, Union, Dict
 
 import docker
 import inspect

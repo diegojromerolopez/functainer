@@ -1,5 +1,4 @@
 from functools import wraps
-from typing import List, Optional
 
 
 from functainer.functainer import func2functainer
