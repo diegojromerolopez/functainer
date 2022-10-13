@@ -1,4 +1,8 @@
 # functainer
+
+[![Maintainability](https://api.codeclimate.com/v1/badges/aba99dc71aec83ee8787/maintainability)](https://codeclimate.com/github/diegojromerolopez/functainer/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/aba99dc71aec83ee8787/test_coverage)](https://codeclimate.com/github/diegojromerolopez/functainer/test_coverage)
+
 [Dockerize](https://www.docker.com/) a function and run it in a container directly from Python.
 
 **WARNING: pre-alpha state project, use only under your responsibility!**
