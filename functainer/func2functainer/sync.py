@@ -23,14 +23,14 @@ def func2functainer(
 
     func_code = ''.join(inspect.getsourcelines(function)[0][1:])
 
+    resources_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'resources')
     docker_client = docker.from_env()
     image, _ = docker_client.images.build(
-        path=os.path.dirname(os.path.realpath(__file__)),
+        path=resources_path,
         buildargs={'IMAGE_NAME': image, 'REQUIREMENTS': ' '.join(requirements)}
     )
 
-    current_dir_path = os.path.dirname(os.path.abspath(__file__))
-    executor_file_path = os.path.join(current_dir_path, '../executor.py.tpl')
+    executor_file_path = os.path.join(resources_path, 'executor.py.tpl')
     with open(executor_file_path) as executor_file:
         executor_file_contents = executor_file.read()
         executor_file_contents = executor_file_contents.replace('__function_definition__', func_code)

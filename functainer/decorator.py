@@ -1,7 +1,7 @@
 from functools import wraps
 
 
-from functainer.func2functainer import func2functainer
+from functainer.func2functainer.sync import func2functainer
 
 
 def functainerize(**kwargs):
