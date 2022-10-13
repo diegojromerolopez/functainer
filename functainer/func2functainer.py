@@ -26,8 +26,7 @@ def func2functainer(
     docker_client = docker.from_env()
     image, _ = docker_client.images.build(
         path=os.path.dirname(os.path.realpath(__file__)),
-        buildargs={'IMAGE_NAME': image, 'REQUIREMENTS': ' '.join(requirements)},
-        rm=True
+        buildargs={'IMAGE_NAME': image, 'REQUIREMENTS': ' '.join(requirements)}
     )
 
     current_dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -48,8 +47,8 @@ def func2functainer(
             image=image,
             command=f'{python_command} /tmp/dockerizer_temp/executor.py',
             volumes=[
-                f'{temp_dir_path}:/tmp/dockerizer_temp:Z',
-                f'{output_file_path}:/tmp/dockerizer_output:Z'
+                f'{temp_dir_path}:/tmp/dockerizer_temp',
+                f'{output_file_path}:/tmp/dockerizer_output'
             ],
             remove=True,
             user=f'{os.getuid()}:{os.getgid()}',
