@@ -1,5 +1,9 @@
 # functainer
 
+![test](https://github.com/diegojromerolopez/functainer/actions/workflows/test.yml/badge.svg)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+[![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/diegojromerolopez/functainer/graphs/commit-activity)
+[![made-with-python](https://img.shields.io/badge/Made%20with-Python-1f425f.svg)](https://www.python.org/)
 [![Maintainability](https://api.codeclimate.com/v1/badges/aba99dc71aec83ee8787/maintainability)](https://codeclimate.com/github/diegojromerolopez/functainer/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/aba99dc71aec83ee8787/test_coverage)](https://codeclimate.com/github/diegojromerolopez/functainer/test_coverage)
 
