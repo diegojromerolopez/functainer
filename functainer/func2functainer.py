@@ -12,11 +12,18 @@ def func2functainer(
         image: str = 'python:latest',
         requirements: Optional[List[str]] = None,
         returning: str = 'file_path',
+        build_container_kwargs: Optional[Dict] = None,
         run_container_kwargs: Optional[Dict] = None
 ) -> Union[str, BinaryIO, bytes]:
 
     if requirements is None:
         requirements = []
+
+    if build_container_kwargs is None:
+        build_container_kwargs = {
+            'nocache': False,
+            'tag': function.__name__
+        }
 
     if run_container_kwargs is None:
         run_container_kwargs = {}
@@ -26,7 +33,8 @@ def func2functainer(
     docker_client = docker.from_env()
     image, _ = docker_client.images.build(
         path=os.path.dirname(os.path.realpath(__file__)),
-        buildargs={'IMAGE_NAME': image, 'REQUIREMENTS': ' '.join(requirements)}
+        buildargs={'IMAGE_NAME': image, 'REQUIREMENTS': ' '.join(requirements)},
+        **build_container_kwargs
     )
 
     current_dir_path = os.path.dirname(os.path.abspath(__file__))
