@@ -53,10 +53,10 @@ def func2functainer(
 
         docker_client.containers.run(
             image=image,
-            command=f'{python_command} /tmp/dockerizer_temp/executor.py',
+            command=f'{python_command} /tmp/functainer_temp/executor.py',
             volumes=[
-                f'{temp_dir_path}:/tmp/dockerizer_temp',
-                f'{output_file_path}:/tmp/dockerizer_output'
+                f'{temp_dir_path}:/tmp/functainer_temp',
+                f'{output_file_path}:/tmp/functainer_output'
             ],
             remove=True,
             user=f'{os.getuid()}:{os.getgid()}',
