@@ -19,10 +19,11 @@ def func2functainer(
     if requirements is None:
         requirements = []
 
+    image_tag = f"{function.__module__}__{function.__name__}"
     if build_container_kwargs is None:
         build_container_kwargs = {
             'nocache': False,
-            'tag': function.__name__
+            'tag': image_tag
         }
 
     if run_container_kwargs is None:
@@ -31,11 +32,15 @@ def func2functainer(
     func_code = ''.join(inspect.getsourcelines(function)[0][1:])
 
     docker_client = docker.from_env()
-    image, _ = docker_client.images.build(
-        path=os.path.dirname(os.path.realpath(__file__)),
-        buildargs={'IMAGE_NAME': image, 'REQUIREMENTS': ' '.join(requirements)},
-        **build_container_kwargs
-    )
+
+    try:
+        image = docker_client.images.get(name=image_tag)
+    except docker.errors.ImageNotFound:
+        image, _ = docker_client.images.build(
+            path=os.path.dirname(os.path.realpath(__file__)),
+            buildargs={'IMAGE_NAME': image, 'REQUIREMENTS': ' '.join(requirements)},
+            **build_container_kwargs
+        )
 
     current_dir_path = os.path.dirname(os.path.abspath(__file__))
     executor_file_path = os.path.join(current_dir_path, 'executor.py.tpl')
