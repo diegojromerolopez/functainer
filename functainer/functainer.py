@@ -4,6 +4,7 @@ from typing import List, Optional, Callable, Dict
 import docker
 import inspect
 import os
+import re
 import tempfile
 
 from docker.models.images import Image
@@ -54,7 +55,11 @@ class Functainer:
         if run_container_kwargs is None:
             run_container_kwargs = {}
 
-        func_code = ''.join(inspect.getsourcelines(self.__function)[0][1:])
+        # TODO: find another way of getting the function code
+        func_code = ''.join(inspect.getsourcelines(self.__function)[0])
+        # TODO: find another way to remove the decorator of the function code
+        if func_code[0] == '@':
+            func_code = re.sub('^@.+', '', func_code)
 
         # Prepare executor file contents based on the template
         current_dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -87,7 +92,7 @@ class Functainer:
 
     @property
     def output_file_path(self):
-        self.__assert(self.__output_file_path is not None, exc_msg='container has not run')
+        self.__assert(self.__output_file_path is not None, exc_msg='container has not run yet')
 
         return self.__output_file_path
 
@@ -107,6 +112,7 @@ class Functainer:
         self.__assert(self.__docker_client is not None, exc_msg='docker client is not initialized')
 
         self.__docker_client.close()
+        self.__docker_client = None
 
     def rm_image(self, force: bool = False):
         self.__assert(self.__image is not None, exc_msg='image is not built yet')
