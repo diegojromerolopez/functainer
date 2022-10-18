@@ -1,0 +1,3 @@
+class FunctainerException(Exception):
+    pass
+

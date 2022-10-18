@@ -5,7 +5,7 @@ from typing import BinaryIO
 from functainer.decorator import functainerize
 
 
-@functainerize(python_command='python2', image='boomset/ubuntu-python27-mysql')
+@functainerize(python_command='python2', from_image='boomset/ubuntu-python27-mysql')
 def old_python(output_file_path):  # pragma: no cover
     with open(output_file_path, 'w') as output_file:
         output_file.write(str(5 / 2))
