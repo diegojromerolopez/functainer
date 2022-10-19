@@ -24,6 +24,12 @@ class Functainer:
         self.__output_file_path: Optional[Path] = None
         self.__docker_client = docker.from_env()
 
+    def __enter__(self):
+        return self
+
+    def __exit__(self, exception_type, exception_value, exception_traceback):
+        self.close()
+
     def build(self, image_tag: str, from_image: str = 'python:latest',
               requirements: Optional[List[str]] = None,
               build_container_kwargs: Optional[Dict] = None

@@ -20,6 +20,14 @@ class TestFunctainer(unittest.TestCase):
 
         self.assertEqual(b'output', output)
 
+    def test_functainer_as_context_manager(self):
+        with Functainer(function=basic_contents_output) as functainer:
+            functainer.build(image_tag='test_image_tag')
+            functainer.run()
+            output = functainer.output
+
+        self.assertEqual(b'output', output)
+
     def test_build_without_initialized_docker_client(self):
         functainer = Functainer(function=ANY)
         functainer.close()
