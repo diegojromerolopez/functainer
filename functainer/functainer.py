@@ -47,7 +47,7 @@ class Functainer:
 
         try:
             self.__image = self.__docker_client.images.get(name=image_tag)
-        except docker.errors.ImageNotFound:
+        except docker.errors.DockerException:
             self.__image, _ = self.__docker_client.images.build(
                 path=os.path.dirname(os.path.realpath(__file__)),
                 buildargs={'FROM_IMAGE': from_image, 'REQUIREMENTS': ' '.join(requirements)},
