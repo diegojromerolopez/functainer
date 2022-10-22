@@ -61,11 +61,7 @@ class Functainer:
         if run_container_kwargs is None:
             run_container_kwargs = {}
 
-        # TODO: find another way of getting the function code
-        func_code = ''.join(inspect.getsourcelines(self.__function)[0])
-        # TODO: find another way to remove the decorator of the function code
-        if func_code[0] == '@':
-            func_code = re.sub('^@.+', '', func_code)
+        func_code = self.__function_code()
 
         # Prepare executor file contents based on the template
         current_dir_path = os.path.dirname(os.path.abspath(__file__))
@@ -124,3 +120,21 @@ class Functainer:
         self.__assert(self.__image is not None, exc_msg='image is not built yet')
 
         self.__image.remove(force=force)
+
+    # TODO: find another way of getting the function code
+    def __function_code(self):
+        # Remove indentation
+        func_code_lines = inspect.getsourcelines(self.__function)[0]
+        if func_code_lines[0].startswith(' '):
+            i = 0
+            while func_code_lines[0][i] == ' ':
+                i += 1
+            indentation = i - 1
+            func_code_lines = [func_code_line[indentation+1:] for func_code_line in func_code_lines]
+
+        func_code = ''.join(func_code_lines)
+
+        # TODO: find another way to remove the decorator of the function code
+        if func_code[0] == '@':
+            func_code = re.sub('^@.+', '', func_code)
+        return func_code

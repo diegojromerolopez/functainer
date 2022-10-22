@@ -94,3 +94,13 @@ class TestDecorator(unittest.TestCase):
         os.unlink(output_file_path)
 
         self.assertEqual(expected_output, output_file_contents)
+
+    def test_local_function(self):
+        @functainerize(requirements=[], returning='contents')
+        def local_func(output_file_path: str):  # pragma: no cover
+            with open(output_file_path, 'wb') as output_file:
+                output_file.write(b'local_func output')
+
+        output: bytes = local_func()
+
+        self.assertEqual(b'local_func output', output)
