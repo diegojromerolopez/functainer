@@ -1,7 +1,6 @@
 import unittest
 from unittest.mock import ANY, patch, Mock, call
 
-import docker
 from docker.errors import DockerException
 
 from functainer.exceptions import FunctainerException
@@ -22,6 +21,21 @@ class TestFunctainer(unittest.TestCase):
         functainer.close()
 
         self.assertEqual(b'output', output)
+
+    def test_http_request(self):
+        def request_func(output_file_path: str):  # pragma: no cover
+            import requests  # noqa
+            response = requests.get('https://github.com')
+
+            with open(output_file_path, 'wb') as output_file:
+                output_file.write(str(response.status_code).encode('utf8'))
+
+        with Functainer(function=request_func) as functainer:
+            functainer.build(image_tag='requests_image', requirements=['requests==2.28.1'])
+            functainer.run()
+            output = functainer.output
+
+        self.assertEqual(b'200', output)
 
     @patch('functainer.functainer.docker')
     def test_functainer_image_exists_check_parameters(self, mock_docker):
