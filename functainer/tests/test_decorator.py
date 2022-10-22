@@ -1,6 +1,7 @@
 import os
 import unittest
 from typing import BinaryIO
+from docker.errors import ContainerError
 
 from functainer.decorator import functainerize
 
@@ -104,3 +105,19 @@ class TestDecorator(unittest.TestCase):
         output: bytes = local_func()
 
         self.assertEqual(b'local_func output', output)
+
+    def test_local_exit_function(self):
+        @functainerize(returning='contents', run_container_kwargs={'stderr': True})
+        def local_func(output_file_path: str):  # pragma: no cover
+            import sys
+            sys.exit(1)
+
+        with self.assertRaises(ContainerError) as exc_context:
+            local_func()
+
+        self.assertEqual(
+            'Command \'python3 /tmp/functainer_temp/executor.py\' in image '
+            '\'sha256:3ec4b7b2691b641d08b51f50c017c0722d58f6c21a7f10c7547fe64a1409b2b7\' '
+            'returned non-zero exit status 1: b\'\'',
+            str(exc_context.exception)
+        )
