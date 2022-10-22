@@ -1,6 +1,8 @@
 import os
 import unittest
 from typing import BinaryIO
+
+import docker
 from docker.errors import ContainerError
 
 from functainer.decorator import functainerize
@@ -115,9 +117,14 @@ class TestDecorator(unittest.TestCase):
         with self.assertRaises(ContainerError) as exc_context:
             local_func()
 
+        docker_client = docker.from_env()
+        image = docker_client.images.get('local_func')
+        image_id = image.id
+        docker_client.close()
+
         self.assertEqual(
             'Command \'python3 /tmp/functainer_temp/executor.py\' in image '
-            '\'sha256:3ec4b7b2691b641d08b51f50c017c0722d58f6c21a7f10c7547fe64a1409b2b7\' '
+            f'\'{image_id}\' '
             'returned non-zero exit status 1: b\'\'',
             str(exc_context.exception)
         )
