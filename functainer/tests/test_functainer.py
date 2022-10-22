@@ -23,14 +23,14 @@ class TestFunctainer(unittest.TestCase):
         self.assertEqual(b'output', output)
 
     def test_http_request(self):
-        def request_func(output_file_path: str):  # pragma: no cover
+        def http_request(output_file_path: str):  # pragma: no cover
             import requests  # noqa
             response = requests.get('https://github.com')
 
             with open(output_file_path, 'wb') as output_file:
                 output_file.write(str(response.status_code).encode('utf8'))
 
-        with Functainer(function=request_func) as functainer:
+        with Functainer(function=http_request) as functainer:
             functainer.build(image_tag='requests_image', requirements=['requests==2.28.1'])
             functainer.run()
             output = functainer.output

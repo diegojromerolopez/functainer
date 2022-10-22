@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List, Optional, Callable, Dict
+from typing import List, Optional, Callable, Dict, Any
 
 import docker
 import inspect
@@ -53,6 +53,7 @@ class Functainer:
                 buildargs={'FROM_IMAGE': from_image, 'REQUIREMENTS': ' '.join(requirements)},
                 **build_container_kwargs
             )
+        return self
 
     def run(self, python_command: str = 'python3', run_container_kwargs: Optional[Dict] = None):
         self.__assert(self.__docker_client is not None, exc_msg='docker client is not initialized')
@@ -91,6 +92,7 @@ class Functainer:
                 user=f'{os.getuid()}:{os.getgid()}',
                 **run_container_kwargs
             )
+        return self
 
     @property
     def output_file_path(self):
